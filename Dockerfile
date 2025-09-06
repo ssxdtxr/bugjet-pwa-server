@@ -1,4 +1,3 @@
-# Базовый образ
 FROM node:18-alpine
 
 # Установка зависимых пакетов для Prisma
@@ -20,8 +19,8 @@ COPY nest-cli.json ./
 # Копируем Prisma schema
 COPY prisma/schema.prisma ./prisma/
 
-# Устанавливаем зависимости
-RUN npm ci
+# Устанавливаем зависимости (ВКЛЮЧАЯ devDependencies для разработки)
+RUN npm ci --include=dev
 
 # Генерируем Prisma client
 RUN npx prisma generate

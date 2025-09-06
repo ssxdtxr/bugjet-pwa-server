@@ -44,7 +44,22 @@ services:
     networks:
       - nestjs_network
     restart: unless-stopped
-    command: sh -c "npx prisma migrate deploy && npm run start:dev"
+    command: sh -c "npx prisma migrate dev --name init && npm run start:dev"
+
+  prisma-studio:
+    build: .
+    container_name: nestjs_prisma_studio
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/mydb
+    ports:
+      - "5556:5555"
+    networks:
+      - nestjs_network
+    command: npx prisma studio --port 5555
+    restart: unless-stopped
+
 
 volumes:
   postgres_data:
